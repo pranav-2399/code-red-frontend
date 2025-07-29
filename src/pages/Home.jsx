@@ -9,15 +9,51 @@ export default function Home() {
   const [destination, setDestination] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleShowOnMap = () => {
-    if (source && destination) {
-      setSubmitted(true);
-    } else {
-      alert("Please select both locations.");
+    const handleShowOnMap = async () => {
+    if (!source || !destination) {
+        alert("Please select both locations.");
+        return;
     }
-  };
+
+    setSubmitted(true);
+
+    const data = {
+        source,
+        destination,
+        timestamp: new Date().toISOString()
+    };
+
+    // 1️⃣ POST to backend
+    try {
+        const response = await fetch("http://localhost:8000/transit/locations", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+        throw new Error("Failed to send data");
+        }
+
+        console.log("✅ Data successfully sent to backend!");
+    } catch (err) {
+        console.error("❌ Error sending data:", err);
+    }
+
+    // 2️⃣ Optional: Download JSON file locally
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'route_data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    };
 
   return (
+    
     <div className="home-container">
       <h1>PHEIDIPPIDES</h1>
       <div className="two-columns">

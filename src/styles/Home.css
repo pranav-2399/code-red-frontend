@@ -6,6 +6,11 @@
     align-items: center; /* Center content horizontally */
     padding: 20px; /* Add some padding around the whole container */
     box-sizing: border-box; /* Include padding in element's total width and height */
+
+    background-image: url('/backgrounds/map-bg.jpg'); /* adjust path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 h1 {
@@ -117,4 +122,3 @@ h1 {
 .suggestions li:hover {
   background-color: #f0f0f0;
 }
-
