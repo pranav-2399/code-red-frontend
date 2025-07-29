@@ -1,9 +1,10 @@
 // components/Map.jsx
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import Routing from './Routing'; // or the correct relative path
 import L from 'leaflet';
 import { useEffect } from 'react';
-
 const markerIcon = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
   iconSize: [25, 41],
@@ -32,18 +33,18 @@ function FlyToLocations({ source, destination }) {
 
 export default function Map({ source, destination }) {
   return (
-    <div className="map-container">
+    <div className="map-holder">
       <MapContainer
-        center={[20.5937, 78.9629]} // Center of India
+        center={[20.5937, 78.9629]}
         zoom={5}
         scrollWheelZoom={true}
-        style={{ height: '500px', width: '100%' }}
+        className="custom-map"
+        style={{ height: '100%', minHeight: '400px', borderRadius: '2%' }}
       >
         <TileLayer
-        //   url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; OpenStreetMap contributors &copy; CartoDB'
+          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
         />
+
         {source && (
           <Marker position={[source.lat, source.lon]} icon={markerIcon}>
             <Popup>Source: {source.display_name}</Popup>
@@ -54,7 +55,11 @@ export default function Map({ source, destination }) {
             <Popup>Destination: {destination.display_name}</Popup>
           </Marker>
         )}
+
         <FlyToLocations source={source} destination={destination} />
+        {source && destination && (
+          <Routing source={source} destination={destination} />
+        )}
       </MapContainer>
     </div>
   );

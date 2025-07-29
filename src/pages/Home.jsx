@@ -19,15 +19,15 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      <h1>Hermes Signing Off</h1>
+      <h1>PHEIDIPPIDES</h1>
       <div className="two-columns">
         <Map
           source={submitted ? source : null}
           destination={submitted ? destination : null}
         />
-        <div className="home-features check">
-          <h2 className="home-features-heading check">Inputs</h2>
-          <div className="features-inputs check">
+        <div className="home-features">
+          <h2 className="home-features-heading">Inputs</h2>
+          <div className="features-inputs">
             <LocationSearch label="Source" onSelect={setSource} />
             <LocationSearch label="Destination" onSelect={setDestination} />
             <button onClick={handleShowOnMap}>Show on Map</button>

@@ -74,8 +74,8 @@ button:focus-visible {
   /* Hacker-Theme Colors */
   --hacker-bg: #1a1a1a; /* Very dark grey/black */
   --hacker-text: #00ff00; /* Neon green */
-  --hacker-accent: #00ffff; /* Electric cyan */
-  --hacker-link-hover: #00ccff; /* Brighter cyan */
+  --hacker-accent: #16d126; /* Electric cyan */
+  --hacker-link-hover: #07a336; /* Brighter cyan */
   --hacker-border: #007700; /* Darker green for borders */
   --hacker-button-bg: #2d2d2d; /* Darker button background */
   --hacker-button-hover-border: #00ff00; /* Neon green for button hover */
