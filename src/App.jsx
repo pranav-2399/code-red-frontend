@@ -12,6 +12,7 @@ function App() {
       <nav>
         <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none' }}>
           <li><Link to="/">Home</Link></li>
+          <li></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/contact">Contact</Link></li>
         </ul>
@@ -22,7 +23,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/map" element={<Map />} />
       </Routes>
     </div>
   )

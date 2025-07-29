@@ -1,4 +1,20 @@
-.MapContainer{
-    height: 100vh;
-    width: 100vw;
+.map-holder {
+    height: 100%;
+    width: 100%;
+    display: flex; /* Use flexbox to center the map */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 10px; /* Add some padding around the map */
+    box-sizing: border-box;
+}
+
+.MapContainer {
+    height: 100%; /* Take full height of map-holder */
+    width: 100%; /* Take full width of map-holder */
+    max-height: 500px; /* Optional: Set a max height for the map */
+    max-width: 800px; /* Optional: Set a max width for the map */
+    border-radius: 12px; /* More subtle rounded corners */
+    border: 2px solid var(--hacker-border); /* Use hacker theme border, slightly thicker */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); /* Cyan glow for the map */
+    overflow: hidden; /* Ensure content respects border-radius */
 }

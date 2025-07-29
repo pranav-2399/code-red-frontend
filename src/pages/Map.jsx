@@ -1,58 +1,61 @@
-// src/pages/Map.jsx
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet";
-// import L from "leaflet";
-import axios from "axios";
-import "leaflet/dist/leaflet.css";
-import '../styles/Map.css';
+// components/Map.jsx
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import { useEffect } from 'react';
 
-const orsApiKey = "YOUR_ORS_API_KEY_HERE";
+const markerIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
 
-const Map = () => {
-  const [route, setRoute] = useState([]);
-
-  const start = [28.6139, 77.2090]; // New Delhi
-  const end = [28.7041, 77.1025];   // Delhi outskirts
+function FlyToLocations({ source, destination }) {
+  const map = useMap();
 
   useEffect(() => {
-    const fetchRoute = async () => {
-      try {
-        const response = await axios.post(
-          "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
-          {
-            coordinates: [ [start[1], start[0]], [end[1], end[0]] ]
-          },
-          {
-            headers: {
-              Authorization: orsApiKey,
-              "Content-Type": "application/json"
-            }
-          }
-        );
+    if (source && destination) {
+      const bounds = L.latLngBounds([
+        [source.lat, source.lon],
+        [destination.lat, destination.lon],
+      ]);
+      map.fitBounds(bounds, { padding: [50, 50] });
+    } else if (source) {
+      map.setView([source.lat, source.lon], 13);
+    } else if (destination) {
+      map.setView([destination.lat, destination.lon], 13);
+    }
+  }, [source, destination, map]);
 
-        const coords = response.data.features[0].geometry.coordinates.map(
-          ([lng, lat]) => [lat, lng]
-        );
-        setRoute(coords);
-      } catch (err) {
-        console.error("Error fetching route:", err);
-      }
-    };
+  return null;
+}
 
-    fetchRoute();
-  });
-
+export default function Map({ source, destination }) {
   return (
-    <MapContainer className="MapContainer" center={start} zoom={11} >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; OpenStreetMap contributors'
-      />
-      <Marker position={start} />
-      <Marker position={end} />
-      {route.length > 0 && <Polyline positions={route} color="blue" />}
-    </MapContainer>
+    <div className="map-container">
+      <MapContainer
+        center={[20.5937, 78.9629]} // Center of India
+        zoom={5}
+        scrollWheelZoom={true}
+        style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer
+        //   url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; OpenStreetMap contributors &copy; CartoDB'
+        />
+        {source && (
+          <Marker position={[source.lat, source.lon]} icon={markerIcon}>
+            <Popup>Source: {source.display_name}</Popup>
+          </Marker>
+        )}
+        {destination && (
+          <Marker position={[destination.lat, destination.lon]} icon={markerIcon}>
+            <Popup>Destination: {destination.display_name}</Popup>
+          </Marker>
+        )}
+        <FlyToLocations source={source} destination={destination} />
+      </MapContainer>
+    </div>
   );
-};
-
-export default Map;
+}
